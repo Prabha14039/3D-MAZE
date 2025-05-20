@@ -1,4 +1,4 @@
 main:
-	@g++ main.cpp -o main -lGL -lGLU -lglut
+	@clang++ main.cpp -o main -framework OpenGL -framework GLUT
 	@./main
 

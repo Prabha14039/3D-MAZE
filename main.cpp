@@ -1,12 +1,11 @@
-#ifdef _WIN32
+
 #define M_PI 3.14159265358979323846
-#endif
+
 
 #include <OpenGL/gl.h>
 #include <OpenGL/glu.h>
 #include <GlUT/glut.h>
 #include <cmath>
-#include <iostream>
 
 using namespace std;
 
@@ -220,30 +219,33 @@ void handleKeyboardInput(unsigned char key, int x, int y)
 }
 
 // Function for arrow key input
-void handleArrowKeys(int key, int x, int y)
-{
-    {
-        userAngle += 0.02; // Rotate the user to the right
-        if (userAngle == 2.0)
-            userAngle = 0; // Wrap around user angle (360 degrees)
-    }
-    if (key == GLUT_KEY_LEFT)
-    {
-        userAngle -= 0.02; // Rotate the user to the left
-        if (userAngle < 0)
-            userAngle = 1.999; // Wrap around user angle (360 degrees)
-    }
-    else if (key == GLUT_KEY_DOWN && !checkCollision(xloc + sin(userAngle * M_PI), zloc - cos(userAngle * M_PI)))
-    {
-        // Move the user forward while checking for collisions
-        xloc += sin(userAngle * M_PI) / 10;
-        zloc -= cos(userAngle * M_PI) / 10;
-    }
-    else if (key == GLUT_KEY_UP && !checkCollision(xloc - sin(userAngle * M_PI), zloc + cos(userAngle * M_PI)))
-    {
-        // Move the user backward while checking for collisions
-        xloc -= sin(userAngle * M_PI) / 5;
-        zloc += cos(userAngle * M_PI) / 5;
+void handleArrowKeys(int key, int x, int y) {
+    switch (key) {
+      case GLUT_KEY_RIGHT:
+        userAngle += 0.02;
+        if (userAngle >= 2.0) userAngle = 0;
+        break;
+
+      case GLUT_KEY_LEFT:
+        userAngle -= 0.02;
+        if (userAngle < 0) userAngle = 1.999;
+        break;
+
+      case GLUT_KEY_DOWN:
+        if (!checkCollision(xloc + sin(userAngle * M_PI),
+                             zloc - cos(userAngle * M_PI))) {
+          xloc += sin(userAngle * M_PI) / 10;
+          zloc -= cos(userAngle * M_PI) / 10;
+        }
+        break;
+
+      case GLUT_KEY_UP:
+        if (!checkCollision(xloc - sin(userAngle * M_PI),
+                             zloc + cos(userAngle * M_PI))) {
+          xloc -= sin(userAngle * M_PI) / 5;
+          zloc += cos(userAngle * M_PI) / 5;
+        }
+        break;
     }
 }
 
